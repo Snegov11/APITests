@@ -18,15 +18,33 @@ public class PostTests extends TestData {
     @Test
     @UseDataProvider("PositivePostTestData")
     public void PositivePostTest(PostData postData) {
-
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
-
         CreatedSuccess createdSuccess = given()
                 .body(postData)
                 .when()
                 .post("posts")
                 .then().log().body()
                 .statusCode(201)
+                .extract().as(CreatedSuccess.class);
+        Assertions.assertAll(
+                "Checking the response body",
+                () -> Assert.assertEquals(ID, createdSuccess.getId()),
+                () -> Assert.assertEquals(postData.getUserID(), createdSuccess.getUserID()),
+                () -> Assert.assertEquals(postData.getBody(), createdSuccess.getBody()),
+                () -> Assert.assertEquals(postData.getTitle(), createdSuccess.getTitle())
+        );
+    }
+
+    @Test
+    @UseDataProvider("PostTestData500")
+    public void PostTest500(PostData postData) {
+        Specification.initSpec(Specification.requestSpec(), Specification.responseSpecInternalServerError500());
+        CreatedSuccess createdSuccess = given()
+                .body(postData)
+                .when()
+                .post("posts")
+                .then().log().body()
+                .statusCode(500)
                 .extract().as(CreatedSuccess.class);
         Assertions.assertAll(
                 "Checking the response body",

@@ -34,12 +34,6 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecBadRequest400() {
-        return new ResponseSpecBuilder()
-                .expectStatusCode(400)
-                .build();
-    }
-
     public static ResponseSpecification responseSpecInternalServerError500() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(500)
