@@ -13,8 +13,7 @@ public class PostTests {
 
     @ParameterizedTest
     @ArgumentsSource(PostDataProvider.class)
-    @Story("User tries to login the system with empty username and invalid password.")
-    @Description("Invalid Login Test with Empty Username and Invalid Password.")
+    @Story("Параметризированные проверки позитивных сценариев метода Post")
     public void PositiveTest(PostData postData) {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
         CreatedSuccess createdSuccess = given()
@@ -28,6 +27,7 @@ public class PostTests {
     }
 
     @Test
+    @Story("Проверка метода Post при отправки в Body Request одно поле UserId")
     public void OnlyUserIdFieldTest() {
         UserIdData userIdData = new UserIdData(12);
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
@@ -48,6 +48,7 @@ public class PostTests {
     }
 
     @Test
+    @Story("Проверка метода Post при отправки в Body Request одно поле body")
     public void OnlyBodyFieldTest() {
         BodyData bodyData = new BodyData("test");
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
@@ -68,6 +69,7 @@ public class PostTests {
     }
 
     @Test
+    @Story("Проверка метода Post при отправки в Body Request одно поле Title")
     public void OnlyTitleFieldTest() {
         TitleData titleData = new TitleData("test");
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
@@ -86,7 +88,5 @@ public class PostTests {
                 () -> UtilsAsserts.checkTitle(titleData, createdSuccess)
         );
     }
-
-
 
 }

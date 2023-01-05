@@ -1,3 +1,4 @@
+import io.qameta.allure.Story;
 import org.example.CreatedSuccess;
 import org.example.Specification;
 import static io.restassured.RestAssured.given;
@@ -9,6 +10,7 @@ public class GetTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "1", "45", "100" })
+    @Story("Параметризированные проверки позитивных сценариев метода Get")
     public void PositiveGetTest(String url) {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecOK200());
         CreatedSuccess createdSuccess = given()
@@ -22,6 +24,7 @@ public class GetTests {
 
     @ParameterizedTest
     @ArgumentsSource(GetDataProvider.class)
+    @Story("Расширенные параметризированные проверки сценариев метода Get на ответ с кодом 404")
     public void GetTest404(String url) throws IllegalAccessException {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecNotFound404());
         CreatedSuccess createdSuccess = given()

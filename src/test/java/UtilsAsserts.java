@@ -1,3 +1,4 @@
+import io.qameta.allure.Step;
 import org.example.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -9,22 +10,27 @@ public class UtilsAsserts {
 
     public static Logger logger = Logger.getLogger(String.valueOf(PostTests.class));
 
+    @Step("Проверка совпадения поля UserId из request и response")
     public static void checkUserId(UserIdData userIdData, CreatedSuccess createdSuccess) {
         Assertions.assertEquals(userIdData.getUserID(), createdSuccess.getUserID());
     }
 
+    @Step("Проверка совпадения поля iD из request и response")
     public static void checkId(CreatedSuccess createdSuccess, Integer iD) {
         Assertions.assertEquals(iD, createdSuccess.getId());
     }
 
+    @Step("Проверка совпадения поля Title из request и response")
     public static void checkTitle(TitleData titleData, CreatedSuccess createdSuccess) {
         Assertions.assertEquals(titleData.getTitle(), createdSuccess.getTitle());
     }
 
+    @Step("Проверка совпадения поля Body из request и response")
     public static void checkBody(BodyData bodyData, CreatedSuccess createdSuccess) {
         Assertions.assertEquals(bodyData.getBody(), createdSuccess.getBody());
     }
 
+    @Step("Проверка Body после метода Get")
     public static void checkBodyAfterGet(CreatedSuccess createdSuccess, String url) {
         Assertions.assertAll(
                 "Checking the response body",
@@ -35,6 +41,7 @@ public class UtilsAsserts {
         );
     }
 
+    @Step("Проверка Body после метода Post")
     public static void checkBodyAfterPost(CreatedSuccess createdSuccess, Integer iD, PostData postData) {
         Assertions.assertAll(
                 "Checking the response body",
@@ -45,6 +52,7 @@ public class UtilsAsserts {
         );
     }
 
+    @Step("Проверка Body is Null")
     public static void checkBodyIsNull(CreatedSuccess createdSuccess) throws IllegalAccessException {
         for (Field f : createdSuccess.getClass().getFields()) {
             if (f.get(createdSuccess) == null) {
@@ -55,6 +63,7 @@ public class UtilsAsserts {
         }
     }
 
+    @Step("Проверка отсутвия поля - Title")
     public static void checkTitleFieldIsNull(CreatedSuccess createdSuccess) {
         try {
             createdSuccess.getTitle().isEmpty();
@@ -64,6 +73,7 @@ public class UtilsAsserts {
         }
     }
 
+    @Step("Проверка отсутвия поля - Body")
     public static void checkBodyFieldIsNull(CreatedSuccess createdSuccess) {
         try {
             createdSuccess.getBody().isEmpty();
@@ -73,6 +83,7 @@ public class UtilsAsserts {
         }
     }
 
+    @Step("Проверка отсутвия поля - UserId")
     public static void checkUserIdFieldIsNull(CreatedSuccess createdSuccess) {
         try {
             createdSuccess.getUserID().hashCode();
