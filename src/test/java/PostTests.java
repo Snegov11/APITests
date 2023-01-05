@@ -1,23 +1,21 @@
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.example.CreatedSuccess;
-import org.example.PostData;
-import org.example.Specification;
-import org.junit.Assert;
-import org.junit.Test;
+import io.qameta.allure.Description;
+import io.qameta.allure.Story;
+import org.example.*;
+import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
-
-@RunWith(DataProviderRunner.class)
-public class PostTests extends TestData {
+public class PostTests {
 
     public static Integer ID = 101;
 
-    @Test
-    @UseDataProvider("PositivePostTestData")
-    public void PositivePostTest(PostData postData) {
+    @ParameterizedTest
+    @ArgumentsSource(PostDataProvider.class)
+    @Story("User tries to login the system with empty username and invalid password.")
+    @Description("Invalid Login Test with Empty Username and Invalid Password.")
+    public void PositiveTest(PostData postData) {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
         CreatedSuccess createdSuccess = given()
                 .body(postData)
@@ -26,34 +24,69 @@ public class PostTests extends TestData {
                 .then().log().body()
                 .statusCode(201)
                 .extract().as(CreatedSuccess.class);
+        UtilsAsserts.checkBodyAfterPost(createdSuccess, ID, postData);
+    }
+
+    @Test
+    public void OnlyUserIdFieldTest() {
+        UserIdData userIdData = new UserIdData(12);
+        Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
+        CreatedSuccess createdSuccess = given()
+                .body(userIdData)
+                .when()
+                .post("posts")
+                .then().log().body()
+                .statusCode(201)
+                .extract().as(CreatedSuccess.class);
         Assertions.assertAll(
                 "Checking the response body",
-                () -> Assert.assertEquals(ID, createdSuccess.getId()),
-                () -> Assert.assertEquals(postData.getUserID(), createdSuccess.getUserID()),
-                () -> Assert.assertEquals(postData.getBody(), createdSuccess.getBody()),
-                () -> Assert.assertEquals(postData.getTitle(), createdSuccess.getTitle())
+                () -> UtilsAsserts.checkTitleFieldIsNull(createdSuccess),
+                () -> UtilsAsserts.checkBodyFieldIsNull(createdSuccess),
+                () -> UtilsAsserts.checkId(createdSuccess, ID),
+                () -> UtilsAsserts.checkUserId(userIdData, createdSuccess)
         );
     }
 
     @Test
-    @UseDataProvider("PostTestData500")
-    public void PostTest500(PostData postData) {
-        Specification.initSpec(Specification.requestSpec(), Specification.responseSpecInternalServerError500());
+    public void OnlyBodyFieldTest() {
+        BodyData bodyData = new BodyData("test");
+        Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
         CreatedSuccess createdSuccess = given()
-                .body(postData)
+                .body(bodyData)
                 .when()
                 .post("posts")
                 .then().log().body()
-                .statusCode(500)
+                .statusCode(201)
                 .extract().as(CreatedSuccess.class);
         Assertions.assertAll(
                 "Checking the response body",
-                () -> Assert.assertEquals(ID, createdSuccess.getId()),
-                () -> Assert.assertEquals(postData.getUserID(), createdSuccess.getUserID()),
-                () -> Assert.assertEquals(postData.getBody(), createdSuccess.getBody()),
-                () -> Assert.assertEquals(postData.getTitle(), createdSuccess.getTitle())
+                () -> UtilsAsserts.checkTitleFieldIsNull(createdSuccess),
+                () -> UtilsAsserts.checkUserIdFieldIsNull(createdSuccess),
+                () -> UtilsAsserts.checkId(createdSuccess, ID),
+                () -> UtilsAsserts.checkBody(bodyData, createdSuccess)
         );
     }
+
+    @Test
+    public void OnlyTitleFieldTest() {
+        TitleData titleData = new TitleData("test");
+        Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
+        CreatedSuccess createdSuccess = given()
+                .body(titleData)
+                .when()
+                .post("posts")
+                .then().log().body()
+                .statusCode(201)
+                .extract().as(CreatedSuccess.class);
+        Assertions.assertAll(
+                "Checking the response body",
+                () -> UtilsAsserts.checkBodyFieldIsNull(createdSuccess),
+                () -> UtilsAsserts.checkUserIdFieldIsNull(createdSuccess),
+                () -> UtilsAsserts.checkId(createdSuccess, ID),
+                () -> UtilsAsserts.checkTitle(titleData, createdSuccess)
+        );
+    }
+
 
 
 }

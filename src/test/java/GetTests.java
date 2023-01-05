@@ -1,19 +1,15 @@
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.example.CreatedSuccess;
 import org.example.Specification;
-import org.junit.Assert;
-import org.junit.Test;
 import static io.restassured.RestAssured.given;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
-@RunWith(DataProviderRunner.class)
-public class GetTests extends TestData {
+public class GetTests {
 
-    @Test
-    @UseDataProvider("PositiveGetTestData")
-    public void PositiveGetTest(String url, Integer iD) {
+    @ParameterizedTest
+    @ValueSource(strings = { "1", "45", "100" })
+    public void PositiveGetTest(String url) {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecOK200());
         CreatedSuccess createdSuccess = given()
                 .when()
@@ -21,17 +17,11 @@ public class GetTests extends TestData {
                 .then().log().body()
                 .statusCode(200)
                 .extract().as(CreatedSuccess.class);
-        Assertions.assertAll(
-                "Checking the response body",
-                () -> Assert.assertEquals(iD, createdSuccess.getId()),
-                () -> Assert.assertNotNull(createdSuccess.getUserId()),
-                () -> Assert.assertNotNull(createdSuccess.getBody()),
-                () -> Assert.assertNotNull(createdSuccess.getTitle())
-        );
+        UtilsAsserts.checkBodyAfterGet(createdSuccess, url);
     }
 
-    @Test
-    @UseDataProvider("GetTestData404")
+    @ParameterizedTest
+    @ArgumentsSource(GetDataProvider.class)
     public void GetTest404(String url) throws IllegalAccessException {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecNotFound404());
         CreatedSuccess createdSuccess = given()
