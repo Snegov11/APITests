@@ -44,4 +44,10 @@ public class CreatedSuccess {
     public Integer getUserId() {
         return userId;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.userID + " " + this.title + " " + this.body + " " + this.id;
+    }
 }

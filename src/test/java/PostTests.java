@@ -13,7 +13,8 @@ public class PostTests {
 
     @ParameterizedTest
     @ArgumentsSource(PostDataProvider.class)
-    @Story("Параметризированные проверки позитивных сценариев метода Post")
+    @Story(value = "Параметризированные проверки сценариев метода Post")
+    @Description(value = "Проверка ответов со статусом кода 201 Created")
     public void PositiveTest(PostData postData) {
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
         CreatedSuccess createdSuccess = given()
@@ -27,7 +28,8 @@ public class PostTests {
     }
 
     @Test
-    @Story("Проверка метода Post при отправки в Body Request одно поле UserId")
+    @Story(value = "Параметризированные проверки сценариев метода Post")
+    @Description(value = "Проверка ответов со статусом кода 201 Created, в request отправляем только поле UserId")
     public void OnlyUserIdFieldTest() {
         UserIdData userIdData = new UserIdData(12);
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
@@ -48,7 +50,8 @@ public class PostTests {
     }
 
     @Test
-    @Story("Проверка метода Post при отправки в Body Request одно поле body")
+    @Story(value = "Параметризированные проверки сценариев метода Post")
+    @Description(value = "Проверка ответов со статусом кода 201 Created, в request отправляем только поле Body")
     public void OnlyBodyFieldTest() {
         BodyData bodyData = new BodyData("test");
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());
@@ -69,7 +72,8 @@ public class PostTests {
     }
 
     @Test
-    @Story("Проверка метода Post при отправки в Body Request одно поле Title")
+    @Story(value = "Параметризированные проверки сценариев метода Post")
+    @Description(value = "Проверка ответов со статусом кода 201 Created, в request отправляем только поле Title")
     public void OnlyTitleFieldTest() {
         TitleData titleData = new TitleData("test");
         Specification.initSpec(Specification.requestSpec(), Specification.responseSpecCreated201());

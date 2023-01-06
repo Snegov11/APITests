@@ -1,5 +1,5 @@
-package org.example;
-
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -40,6 +40,7 @@ public class Specification {
                 .build();
     }
 
+    @Step("Устанавливаем специафикацию для request и response - {response}")
     public static void initSpec(RequestSpecification request, ResponseSpecification response) {
         RestAssured.requestSpecification = request;
         RestAssured.responseSpecification = response;

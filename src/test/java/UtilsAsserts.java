@@ -1,3 +1,5 @@
+import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.example.*;
 import org.junit.Assert;
@@ -13,21 +15,29 @@ public class UtilsAsserts {
     @Step("Проверка совпадения поля UserId из request и response")
     public static void checkUserId(UserIdData userIdData, CreatedSuccess createdSuccess) {
         Assertions.assertEquals(userIdData.getUserID(), createdSuccess.getUserID());
+        Allure.addAttachment("UsedId from request", "application/json", userIdData.getUserID().toString());
+        Allure.addAttachment("UsedId from response", "application/json", createdSuccess.getUserID().toString());
     }
 
     @Step("Проверка совпадения поля iD из request и response")
     public static void checkId(CreatedSuccess createdSuccess, Integer iD) {
         Assertions.assertEquals(iD, createdSuccess.getId());
+        Allure.addAttachment("Id from request", "application/json", iD.toString());
+        Allure.addAttachment("Id from response", "application/json", createdSuccess.getId().toString());
     }
 
     @Step("Проверка совпадения поля Title из request и response")
     public static void checkTitle(TitleData titleData, CreatedSuccess createdSuccess) {
         Assertions.assertEquals(titleData.getTitle(), createdSuccess.getTitle());
+        Allure.addAttachment("Title from request", "application/json", titleData.getTitle());
+        Allure.addAttachment("Title from response", "application/json", createdSuccess.getTitle());
     }
 
     @Step("Проверка совпадения поля Body из request и response")
     public static void checkBody(BodyData bodyData, CreatedSuccess createdSuccess) {
         Assertions.assertEquals(bodyData.getBody(), createdSuccess.getBody());
+        Allure.addAttachment("Body from request", "application/json", bodyData.getBody());
+        Allure.addAttachment("Body from response", "application/json", createdSuccess.getBody());
     }
 
     @Step("Проверка Body после метода Get")
@@ -39,6 +49,11 @@ public class UtilsAsserts {
                 () -> Assertions.assertNotNull(createdSuccess.getBody()),
                 () -> Assertions.assertNotNull(createdSuccess.getTitle())
         );
+        Allure.addAttachment("Id from request", "application/json", url);
+        Allure.addAttachment("Id from response", "application/json", createdSuccess.getId().toString());
+        Allure.addAttachment("UserId from response", "application/json", createdSuccess.getUserId().toString());
+        Allure.addAttachment("Body from response", "application/json", createdSuccess.getBody());
+        Allure.addAttachment("Title from response", "application/json", createdSuccess.getTitle());
     }
 
     @Step("Проверка Body после метода Post")
@@ -50,6 +65,8 @@ public class UtilsAsserts {
                 () -> Assertions.assertEquals(postData.getBody(), createdSuccess.getBody()),
                 () -> Assertions.assertEquals(postData.getTitle(), createdSuccess.getTitle())
         );
+        Allure.addAttachment("Body from request", "application/json", postData.toString());
+        Allure.addAttachment("Body from response", "application/json", createdSuccess.toString());
     }
 
     @Step("Проверка Body is Null")
@@ -61,6 +78,7 @@ public class UtilsAsserts {
                 Assert.assertNull(f.get(createdSuccess));
             }
         }
+        Allure.addAttachment("Body from response", "application/json", createdSuccess.toString());
     }
 
     @Step("Проверка отсутвия поля - Title")
@@ -71,6 +89,8 @@ public class UtilsAsserts {
         catch (NullPointerException e) {
             logger.info("Title field is " + e.getMessage());
         }
+        Allure.addAttachment("Title from response is", "application/json", createdSuccess.toString());
+
     }
 
     @Step("Проверка отсутвия поля - Body")
@@ -81,6 +101,7 @@ public class UtilsAsserts {
         catch (NullPointerException e) {
             logger.info("Body field is " + e.getMessage());
         }
+        Allure.addAttachment("Body from response is", "application/json", createdSuccess.toString());
     }
 
     @Step("Проверка отсутвия поля - UserId")
@@ -91,6 +112,7 @@ public class UtilsAsserts {
         catch (NullPointerException e) {
             logger.info("UserId field is " + e.getMessage());
         }
+        Allure.addAttachment("UserId from response is", "application/json", createdSuccess.toString());
     }
 
 }

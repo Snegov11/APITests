@@ -34,4 +34,10 @@ public class PostData {
     public String getBody() {
         return body;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.userID + " " + this.title + " " + this.body;
+    }
 }
