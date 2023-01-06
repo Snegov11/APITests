@@ -1,7 +1,6 @@
 import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import org.example.CreatedSuccess;
-
 import static io.restassured.RestAssured.given;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;

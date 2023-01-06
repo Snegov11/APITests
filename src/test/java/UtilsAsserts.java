@@ -1,10 +1,8 @@
 import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.example.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
-
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
 

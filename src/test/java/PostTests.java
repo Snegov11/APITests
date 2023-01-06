@@ -92,5 +92,4 @@ public class PostTests {
                 () -> UtilsAsserts.checkTitle(titleData, createdSuccess)
         );
     }
-
 }
