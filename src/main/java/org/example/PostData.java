@@ -38,6 +38,6 @@ public class PostData {
     @Override
     public String toString()
     {
-        return this.userID + " " + this.title + " " + this.body;
+        return "UserId: " + this.userID + "\n" + "Title: " + this.title + "\n" + "Body: " + this.body;
     }
 }

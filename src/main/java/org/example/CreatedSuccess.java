@@ -48,6 +48,6 @@ public class CreatedSuccess {
     @Override
     public String toString()
     {
-        return this.userID + " " + this.title + " " + this.body + " " + this.id;
+        return "UserId: " + this.userID + "\n" + "Title: " + this.title + "\n" + "Body: " + this.body + "\n" + "Id: " + this.id;
     }
 }
